@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.view.KeyEvent
 import android.view.View
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -13,15 +12,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.luthpunk.tvreader.R
 import com.luthpunk.tvreader.TvReaderApp
 import com.luthpunk.tvreader.data.model.BookRecord
 import com.luthpunk.tvreader.data.pdf.PdfEngine
-import com.luthpunk.tvreader.ui.adapter.BookmarkAdapter
-import com.luthpunk.tvreader.ui.adapter.PageJumpAdapter
 import com.luthpunk.tvreader.ui.adapter.PdfPageAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,30 +34,19 @@ class ReaderActivity : AppCompatActivity() {
 
     private var currentBook: BookRecord? = null
     private var currentPageIndex: Int = 0
-    private var isFocusMode = false
+    private var isInfoVisible = true
 
     // Views
     private lateinit var readerRoot: FrameLayout
     private lateinit var vpReaderPaged: ViewPager2
     private lateinit var loadingIndicator: ProgressBar
 
+    // Floating Overlays (Title only, no buttons)
     private lateinit var topToolbar: LinearLayout
     private lateinit var bottomToolbar: LinearLayout
-    private lateinit var btnBack: Button
     private lateinit var tvDocTitle: TextView
-    private lateinit var btnToggleBookmark: Button
-    private lateinit var btnOpenToc: Button
-
     private lateinit var tvPageIndicator: TextView
     private lateinit var readerProgressBar: ProgressBar
-
-    // Side Drawer (TOC & Bookmarks)
-    private lateinit var drawerLayout: LinearLayout
-    private lateinit var btnCloseDrawer: Button
-    private lateinit var rvBookmarks: RecyclerView
-    private lateinit var tvNoBookmarks: TextView
-    private lateinit var rvPageList: RecyclerView
-    private lateinit var bookmarkAdapter: BookmarkAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,33 +66,9 @@ class ReaderActivity : AppCompatActivity() {
 
         topToolbar = findViewById(R.id.topToolbar)
         bottomToolbar = findViewById(R.id.bottomToolbar)
-        btnBack = findViewById(R.id.btnBack)
         tvDocTitle = findViewById(R.id.tvDocTitle)
-        btnToggleBookmark = findViewById(R.id.btnToggleBookmark)
-        btnOpenToc = findViewById(R.id.btnOpenToc)
-
         tvPageIndicator = findViewById(R.id.tvPageIndicator)
         readerProgressBar = findViewById(R.id.readerProgressBar)
-
-        drawerLayout = findViewById(R.id.drawerLayout)
-        btnCloseDrawer = findViewById(R.id.btnCloseDrawer)
-        rvBookmarks = findViewById(R.id.rvBookmarks)
-        tvNoBookmarks = findViewById(R.id.tvNoBookmarks)
-        rvPageList = findViewById(R.id.rvPageList)
-
-        btnBack.setOnClickListener { finish() }
-
-        btnToggleBookmark.setOnClickListener {
-            toggleCurrentPageBookmark()
-        }
-
-        btnOpenToc.setOnClickListener {
-            toggleDrawer(true)
-        }
-
-        btnCloseDrawer.setOnClickListener {
-            toggleDrawer(false)
-        }
 
         vpReaderPaged.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -173,7 +133,7 @@ class ReaderActivity : AppCompatActivity() {
             loadingIndicator.visibility = View.GONE
 
             if (!opened || pdfEngine.pageCount == 0) {
-                Toast.makeText(this@ReaderActivity, R.string.error_opening_pdf, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@ReaderActivity, "Unable to open PDF document", Toast.LENGTH_LONG).show()
                 finish()
                 return@launch
             }
@@ -201,9 +161,7 @@ class ReaderActivity : AppCompatActivity() {
             setupAdapters()
             jumpToPage(currentPageIndex)
             updatePageProgress(currentPageIndex)
-            setupDrawerContent()
 
-            // Keep focus strictly on the reading canvas so OK toggles menus cleanly
             readerRoot.requestFocus()
         }
     }
@@ -211,47 +169,14 @@ class ReaderActivity : AppCompatActivity() {
     private fun setupAdapters() {
         val adapter = PdfPageAdapter(pdfEngine, lifecycleScope)
         vpReaderPaged.adapter = adapter
-        // Keep 2 offscreen pages rendered so slide transitions are butter-smooth and instant
+        // Keep 2 offscreen pages rendered for instant, butter-smooth page flips
         vpReaderPaged.offscreenPageLimit = 2
-    }
-
-    private fun setupDrawerContent() {
-        val book = currentBook ?: return
-
-        bookmarkAdapter = BookmarkAdapter(
-            bookmarks = book.bookmarks,
-            onBookmarkClicked = { bookmark ->
-                jumpToPage(bookmark.pageIndex)
-                toggleDrawer(false)
-            },
-            onBookmarkDeleteClicked = { bookmark ->
-                app.repository.removeBookmark(book.id, bookmark.pageIndex)
-                updateBookmarkList()
-                updateBookmarkButtonState()
-            }
-        )
-        rvBookmarks.layoutManager = LinearLayoutManager(this)
-        rvBookmarks.adapter = bookmarkAdapter
-        updateBookmarkList()
-
-        val jumpAdapter = PageJumpAdapter(pdfEngine.pageCount) { pageIndex ->
-            jumpToPage(pageIndex)
-            toggleDrawer(false)
-        }
-        rvPageList.layoutManager = LinearLayoutManager(this)
-        rvPageList.adapter = jumpAdapter
-    }
-
-    private fun updateBookmarkList() {
-        val book = currentBook ?: return
-        bookmarkAdapter.updateData(book.bookmarks)
-        tvNoBookmarks.visibility = if (book.bookmarks.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun jumpToPage(pageIndex: Int) {
         val clamped = pageIndex.coerceIn(0, pdfEngine.pageCount - 1)
         currentPageIndex = clamped
-        vpReaderPaged.setCurrentItem(clamped, true) // Smooth slide transition
+        vpReaderPaged.setCurrentItem(clamped, true)
         updatePageProgress(clamped)
     }
 
@@ -260,7 +185,7 @@ class ReaderActivity : AppCompatActivity() {
         val total = pdfEngine.pageCount.coerceAtLeast(1)
         val currentDisplay = pageIndex + 1
 
-        tvPageIndicator.text = getString(R.string.page_counter, currentDisplay, total)
+        tvPageIndicator.text = "Page $currentDisplay of $total"
         val progress = ((currentDisplay.toFloat() / total.toFloat()) * 100).toInt()
         readerProgressBar.progress = progress
 
@@ -268,125 +193,44 @@ class ReaderActivity : AppCompatActivity() {
             it.lastPage = pageIndex
             app.repository.updateBook(it)
         }
-
-        updateBookmarkButtonState()
     }
 
-    private fun updateBookmarkButtonState() {
-        val book = currentBook ?: return
-        val isMarked = app.repository.isBookmarked(book.id, currentPageIndex)
-        btnToggleBookmark.text = if (isMarked) "Bookmarked" else "Bookmark"
-    }
-
-    private fun toggleCurrentPageBookmark() {
-        val book = currentBook ?: return
-        val isMarked = app.repository.isBookmarked(book.id, currentPageIndex)
-        if (isMarked) {
-            app.repository.removeBookmark(book.id, currentPageIndex)
-            Toast.makeText(this, "Bookmark removed for page ${currentPageIndex + 1}", Toast.LENGTH_SHORT).show()
-        } else {
-            app.repository.addBookmark(book.id, currentPageIndex, "Page ${currentPageIndex + 1}")
-            Toast.makeText(this, "Page ${currentPageIndex + 1} bookmarked", Toast.LENGTH_SHORT).show()
-        }
-        updateBookmarkButtonState()
-        updateBookmarkList()
-        btnToggleBookmark.requestFocus()
-    }
-
-    private fun toggleFocusMode() {
-        isFocusMode = !isFocusMode
-        val visibility = if (isFocusMode) View.GONE else View.VISIBLE
+    private fun toggleInfoOverlays() {
+        isInfoVisible = !isInfoVisible
+        val visibility = if (isInfoVisible) View.VISIBLE else View.GONE
         topToolbar.visibility = visibility
         bottomToolbar.visibility = visibility
-
-        // Keep focus on readerRoot so subsequent OK presses toggle menus without activating buttons
-        readerRoot.requestFocus()
-    }
-
-    private fun toggleDrawer(open: Boolean) {
-        if (open) {
-            drawerLayout.visibility = View.VISIBLE
-            updateBookmarkList()
-            btnCloseDrawer.requestFocus()
-        } else {
-            drawerLayout.visibility = View.GONE
-            readerRoot.requestFocus()
-        }
     }
 
     // Android TV Remote Control Key Interceptor
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        // 1. If Drawer is open, Back button closes it
-        if (drawerLayout.visibility == View.VISIBLE) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                toggleDrawer(false)
-                return true
-            }
-            return super.onKeyDown(keyCode, event)
-        }
-
         when (keyCode) {
-            // 2. Remote OK / Center button:
-            // If focus is on the reader canvas: ALWAYS toggles toolbar visibility (show / hide)
-            // If focus was explicitly moved UP to toolbar: let the focused button handle the click!
+            // Remote OK / Center button: toggles title and bottom indicator visibility
             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
-                if (!topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
-                    toggleFocusMode()
-                    return true
-                }
-                return super.onKeyDown(keyCode, event)
-            }
-
-            // 3. Remote UP:
-            // If menu is visible and focus is on reading canvas: move highlight UP to toolbar
-            KeyEvent.KEYCODE_DPAD_UP -> {
-                if (!isFocusMode && !topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
-                    btnToggleBookmark.requestFocus()
-                    return true
-                }
-            }
-
-            // 4. Remote DOWN:
-            // If focus is currently in top toolbar: move highlight DOWN back to reading canvas
-            KeyEvent.KEYCODE_DPAD_DOWN -> {
-                if (topToolbar.hasFocus()) {
-                    readerRoot.requestFocus()
-                    return true
-                }
-            }
-
-            // 5. Remote Left / Page Up: flips to previous page
-            KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_PAGE_UP -> {
-                if (!topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
-                    if (currentPageIndex > 0) {
-                        jumpToPage(currentPageIndex - 1)
-                        return true
-                    }
-                }
-            }
-
-            // 6. Remote Right / Page Down: flips to next page
-            KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_PAGE_DOWN -> {
-                if (!topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
-                    if (currentPageIndex < pdfEngine.pageCount - 1) {
-                        jumpToPage(currentPageIndex + 1)
-                        return true
-                    }
-                }
-            }
-
-            // 7. Menu / Info button opens TOC Drawer
-            KeyEvent.KEYCODE_MENU, KeyEvent.KEYCODE_INFO -> {
-                toggleDrawer(true)
+                toggleInfoOverlays()
                 return true
             }
 
-            // 8. Back button: if menu is visible, hide it first; else exit
-            KeyEvent.KEYCODE_BACK -> {
-                if (!isFocusMode) {
-                    toggleFocusMode()
+            // Remote Left / Page Up: flips to previous page
+            KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_PAGE_UP -> {
+                if (currentPageIndex > 0) {
+                    jumpToPage(currentPageIndex - 1)
                     return true
                 }
+            }
+
+            // Remote Right / Page Down: flips to next page
+            KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_PAGE_DOWN -> {
+                if (currentPageIndex < pdfEngine.pageCount - 1) {
+                    jumpToPage(currentPageIndex + 1)
+                    return true
+                }
+            }
+
+            // Back button exits reader immediately
+            KeyEvent.KEYCODE_BACK -> {
+                finish()
+                return true
             }
         }
 

@@ -7,31 +7,31 @@
 
     <!-- Subtle paper background (Square sheet) -->
     <path
-        android:fillColor="#1B1E26"
-        android:strokeColor="#2E3444"
+        android:fillColor="#181A20"
+        android:strokeColor="#2C303D"
         android:strokeWidth="1"
         android:pathData="M16,14h88v132h-88z" />
 
     <!-- Top fold detail -->
     <path
-        android:fillColor="#252A36"
-        android:strokeColor="#2E3444"
+        android:fillColor="#22252E"
+        android:strokeColor="#2C303D"
         android:strokeWidth="1"
         android:pathData="M80,14h24v24z" />
 
     <!-- Minimal Document Line strokes -->
     <path
-        android:strokeColor="#3E475C"
+        android:strokeColor="#3E4454"
         android:strokeWidth="1.5"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
         android:pathData="M32,46h44M32,58h56M32,70h56M32,82h40" />
 
-    <!-- Clean PDF Badge Outline -->
+    <!-- Clean PDF Badge Outline (Pure White Outline, No Neon) -->
     <path
-        android:fillColor="#12151D"
-        android:strokeColor="#00E5FF"
-        android:strokeWidth="1.2"
+        android:fillColor="#15171C"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1"
         android:pathData="M32,104h56v24h-56z" />
 
     <!-- "P" -->

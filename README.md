@@ -1,57 +1,57 @@
 # 📺 TV Reader (PDF Reader for Android TV)
 
-Minimalist, distraction-free PDF e-reader built specifically for your couch and remote control.
+Minimalist, distraction-free PDF reader designed specifically for Android TV, your couch, and remote control.
 
 [![Build Android TV PDF Reader APK](https://github.com/luthpunk/pdf-reader-tv/actions/workflows/build-apk.yml/badge.svg)](https://github.com/luthpunk/pdf-reader-tv/actions/workflows/build-apk.yml)
-[![GitHub release](https://img.shields.io/github/v/release/luthpunk/pdf-reader-tv?color=38BDF8)](https://github.com/luthpunk/pdf-reader-tv/releases/latest)
+[![GitHub release](https://img.shields.io/github/v/release/luthpunk/pdf-reader-tv?color=white)](https://github.com/luthpunk/pdf-reader-tv/releases/latest)
 
 ---
 
-## 🛋️ Why TV Reader?
+## ✨ Features & Design
 
-Most PDF viewers are designed for phones and tablets — requiring touch gestures, containing tiny buttons you can't reach with a remote, or failing completely on Android TV.
-
-**TV Reader** was built from scratch for the remote control:
-- **100% D-Pad Navigation:** Every screen, button, and menu works smoothly with TV remote controls.
-- **Continuous Scroll & Page-by-Page Modes:** Switch seamlessly between horizontal book flipping and smooth vertical scrolling.
-- **Focus Mode:** Press `[OK]` to hide all toolbars for an immersive, distraction-free reading experience on your TV screen.
-- **TOC & Bookmarks Side Drawer:** Quick chapter jump and multi-page bookmarking.
-- **Home Screen & Continue Reading:** Resume your last read document instantly with a progress bar and auto-generated cover art.
-- **Internal Storage & USB OTG:** Direct file browser to read documents from internal storage or plugged-in USB flash drives.
-- **"Open With" Support:** Register as the default PDF viewer from any Android TV file manager.
+- 🖤 **Matte Dark Grey Aesthetic:** Soft, premium `#131417` dark background with 100% crisp pure white typography (`#FFFFFF`).
+- 🔘 **Transparent Outlined Pill Buttons:** Ultra-minimalist 34dp buttons with subtle stroke outlines, clean vector line icons, and zero neon bloat.
+- 📐 **Square Thin-Frame Document Banners:** Thin 1dp rectangular frames that sit flush with the natural rectangular shape of PDF paper sheets.
+- 📄 **Harmonious "All Documents" View:** Uniform line-art PDF document banners for all scanned files to maintain a consistent, cohesive grid.
+- 🛋️ **Netflix-Style Horizontal Swimlanes:**
+  - **Continue Reading:** Quick-resume row with reading progress bars for active books.
+  - **All Documents:** Automatically lists all discovered PDFs from internal storage and USB drives.
+- 🔍 **Live Title Search:** Quickly filter your document collection from the TV remote.
+- 📖 **Distraction-Free Reading:** All buttons are hidden while reading — only the clean document title and page indicator appear, leaving the screen 100% dedicated to your document.
 
 ---
 
 ## 🎮 Remote Control Shortcuts
 
-| Remote Button | Action in Reader |
+### Main Screen
+| Remote Button | Action |
 |---|---|
-| **D-Pad Left / Right** | Turn Page Backward / Forward (in Page-by-Page mode) |
-| **D-Pad Up / Down** | Smooth vertical scroll (in Continuous mode) |
-| **D-Pad OK / Center** | **Toggle Focus Mode** (hides / shows toolbars) |
-| **Menu / Info Button** | Open Table of Contents & Bookmarks Side Drawer |
-| **Back Button** | Exit Focus Mode / Close Drawer / Back to Library |
+| **D-Pad Left / Right** | Browse documents within a category row |
+| **D-Pad Up / Down** | Switch between rows and top action buttons |
+| **D-Pad OK / Center** | Open selected document / click button |
+
+### Reading Mode (PDF Viewer)
+| Remote Button | Action |
+|---|---|
+| **D-Pad Left / Page Up** | Turn to previous page |
+| **D-Pad Right / Page Down** | Turn to next page |
+| **D-Pad OK / Center** | Toggle document title and bottom progress bar visibility |
+| **Back Button** | Exit reader directly back to Home screen |
 
 ---
 
-## 🛠️ Automated CI/CD Build
+## 📦 Download & Installation
 
-Every push to `main` automatically triggers the GitHub Actions workflow to:
-1. Compile the project with Android Gradle Plugin & JDK 17.
-2. Produce signed `pdf-reader-tv.apk`.
-3. Publish a new **GitHub Release** with direct APK download.
-
----
-
-## 📦 Installation
-
-Download the latest APK from [Releases](https://github.com/luthpunk/pdf-reader-tv/releases/latest) and install it on your Android TV via ADB or a USB drive:
+Download the latest APK from [Releases](https://github.com/luthpunk/pdf-reader-tv/releases/latest) and install via ADB or USB flash drive:
 
 ```bash
 adb install -r pdf-reader-tv.apk
 ```
 
 ---
+
+## 🛠️ Automated CI/CD
+Every commit to `main` automatically triggers GitHub Actions to build a signed release APK and publish a new tag to GitHub Releases.
 
 ## 📄 License
 MIT License

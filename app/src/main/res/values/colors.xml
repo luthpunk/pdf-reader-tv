@@ -4,33 +4,33 @@
     <color name="bg_main">#131417</color>
     <color name="bg_surface">#1A1C22</color>
     <color name="bg_card">#181A20</color>
-    <color name="bg_card_focused">#1E2330</color>
+    <color name="bg_card_focused">#22252E</color>
 
-    <!-- Dark Neon Palette -->
-    <color name="neon_cyan">#00E5FF</color>
-    <color name="neon_cyan_glow">#3300E5FF</color>
-    <color name="accent_blue">#38BDF8</color>
-    <color name="accent_teal">#00E5FF</color>
-    <color name="accent_amber">#FBBF24</color>
+    <!-- Clean Monochrome Palette (No Neon) -->
+    <color name="neon_cyan">#FFFFFF</color>
+    <color name="neon_cyan_glow">#33FFFFFF</color>
+    <color name="accent_blue">#FFFFFF</color>
+    <color name="accent_teal">#FFFFFF</color>
+    <color name="accent_amber">#FFFFFF</color>
 
-    <!-- All Fonts Pure White as requested -->
+    <!-- All Fonts Pure White -->
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#FFFFFF</color>
-    <color name="text_muted">#D0D5DD</color>
+    <color name="text_muted">#C0C5D0</color>
 
-    <!-- Thin Outlines for Square Paper Aesthetics -->
-    <color name="border_subtle">#2A2E3B</color>
-    <color name="border_neon">#00E5FF</color>
+    <!-- Thin Clean Outlines -->
+    <color name="border_subtle">#2C303D</color>
+    <color name="border_neon">#FFFFFF</color>
 
     <color name="progress_track">#252A36</color>
-    <color name="progress_indicator">#00E5FF</color>
+    <color name="progress_indicator">#FFFFFF</color>
 
-    <color name="overlay_toolbar">#F0131417</color>
-    <color name="overlay_drawer">#F8131417</color>
+    <color name="overlay_toolbar">#E6131417</color>
+    <color name="overlay_drawer">#F2131417</color>
 
-    <!-- Minimalist Pill Colors -->
-    <color name="pill_bg_normal">#1D2028</color>
-    <color name="pill_bg_focused">#242B3B</color>
-    <color name="pill_stroke_normal">#313747</color>
-    <color name="pill_stroke_focused">#00E5FF</color>
+    <!-- Pill Outlined Transparent Colors -->
+    <color name="pill_bg_normal">@android:color/transparent</color>
+    <color name="pill_bg_focused">#262B38</color>
+    <color name="pill_stroke_normal">#404656</color>
+    <color name="pill_stroke_focused">#FFFFFF</color>
 </resources>

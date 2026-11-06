@@ -37,14 +37,10 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-    private enum class SortType { DATE, NAME, PROGRESS }
-    private var currentSort = SortType.DATE
-
     private lateinit var app: TvReaderApp
 
-    // Top Navigation Pills
+    // Top Navigation Pills (Clean Pill Outlined)
     private lateinit var btnSearch: Button
-    private lateinit var btnSort: Button
     private lateinit var btnBrowseFiles: Button
 
     // Search Box
@@ -110,7 +106,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         btnSearch = findViewById(R.id.btnSearch)
-        btnSort = findViewById(R.id.btnSort)
         btnBrowseFiles = findViewById(R.id.btnBrowseFiles)
 
         layoutSearchBar = findViewById(R.id.layoutSearchBar)
@@ -130,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         rvContinueReading.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvContinueReading.adapter = continueAdapter
 
-        // User request: All Documents row displays uniform PDF document art so all cards match cohesively
+        // User request: All Documents row displays uniform square PDF document art so all cards match cohesively
         allDocsAdapter = LibraryGridAdapter(emptyList(), isAllDocumentsRow = true) { book -> openBook(book) }
         rvAllDocuments.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvAllDocuments.adapter = allDocsAdapter
@@ -155,24 +150,10 @@ class MainActivity : AppCompatActivity() {
         etSearchQuery.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                applyFilterAndSort()
+                applyFilter()
             }
             override fun afterTextChanged(s: Editable?) {}
         })
-
-        btnSort.setOnClickListener {
-            currentSort = when (currentSort) {
-                SortType.DATE -> SortType.NAME
-                SortType.NAME -> SortType.PROGRESS
-                SortType.PROGRESS -> SortType.DATE
-            }
-            btnSort.text = when (currentSort) {
-                SortType.DATE -> "Sort: Date"
-                SortType.NAME -> "Sort: Name"
-                SortType.PROGRESS -> "Sort: Progress"
-            }
-            applyFilterAndSort()
-        }
 
         btnBrowseFiles.setOnClickListener {
             openCustomFilePicker()
@@ -193,22 +174,17 @@ class MainActivity : AppCompatActivity() {
 
         // 2. All Documents: Merge stored books with any scanned books
         allDiscoveredBooks = storedBooks
-        applyFilterAndSort()
+        applyFilter()
     }
 
-    private fun applyFilterAndSort() {
+    private fun applyFilter() {
         val query = etSearchQuery.text.toString().trim().lowercase()
 
-        var filtered = if (query.isEmpty()) {
-            allDiscoveredBooks
+        val filtered = if (query.isEmpty()) {
+            allDiscoveredBooks.sortedByDescending { it.lastOpenedTimestamp }
         } else {
             allDiscoveredBooks.filter { it.title.lowercase().contains(query) }
-        }
-
-        filtered = when (currentSort) {
-            SortType.DATE -> filtered.sortedByDescending { it.lastOpenedTimestamp }
-            SortType.NAME -> filtered.sortedBy { it.title.lowercase() }
-            SortType.PROGRESS -> filtered.sortedByDescending { it.progressPercentage }
+                .sortedByDescending { it.lastOpenedTimestamp }
         }
 
         allDocsAdapter.updateData(filtered)

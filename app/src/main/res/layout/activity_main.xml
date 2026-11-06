@@ -11,7 +11,7 @@
     android:paddingTop="22dp"
     android:paddingBottom="20dp">
 
-    <!-- Top Bar: Brand + Minimalist Small Stroke-Icon Buttons -->
+    <!-- Top Bar: Brand + Clean Outlined Pill Buttons (Search and Browse Files) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,31 +19,18 @@
         android:gravity="center_vertical"
         android:layout_marginBottom="18dp">
 
-        <!-- Brand Title with Thin Neon Line Indicator -->
-        <LinearLayout
+        <!-- Brand Title -->
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:text="TV Reader"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.02" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TV Reader"
-                android:textColor="#FFFFFF"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.02" />
-
-            <View
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginStart="8dp"
-                android:background="@color/neon_cyan" />
-        </LinearLayout>
-
-        <!-- Minimalist Small Buttons (Height: 34dp, Line Icons, White Font) -->
+        <!-- Top Menu: Only Search and Browse Files (Pill Outlined, Transparent) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,26 +50,8 @@
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
                 android:focusable="true"
-                android:nextFocusRight="@+id/btnSort"
-                android:layout_marginEnd="10dp" />
-
-            <Button
-                android:id="@+id/btnSort"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:text="Sort: Date"
-                android:textColor="@color/btn_focus_text_color"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:drawableStart="@drawable/ic_sort_stroke"
-                android:drawablePadding="6dp"
-                android:background="@drawable/focus_button_bg"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:focusable="true"
-                android:nextFocusLeft="@+id/btnSearch"
                 android:nextFocusRight="@+id/btnBrowseFiles"
-                android:layout_marginEnd="10dp" />
+                android:layout_marginEnd="12dp" />
 
             <Button
                 android:id="@+id/btnBrowseFiles"
@@ -98,7 +67,7 @@
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
                 android:focusable="true"
-                android:nextFocusLeft="@+id/btnSort" />
+                android:nextFocusLeft="@+id/btnSearch" />
         </LinearLayout>
     </LinearLayout>
 
