@@ -47,12 +47,14 @@ class LibraryGridAdapter(
                 }
             }
 
-            // TV Focus scale effect
+            // TV Focus scale and elevation effect
             itemView.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    itemView.animate().scaleX(1.05f).scaleY(1.05f).setDuration(150).start()
+                    itemView.elevation = 12f
+                    itemView.animate().scaleX(1.06f).scaleY(1.06f).setDuration(120).start()
                 } else {
-                    itemView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
+                    itemView.elevation = 0f
+                    itemView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(120).start()
                 }
             }
         }

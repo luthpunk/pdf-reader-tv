@@ -3,66 +3,186 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_surface"
-    android:padding="24dp">
+    android:background="@color/bg_main"
+    android:paddingStart="36dp"
+    android:paddingEnd="36dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
 
-    <!-- Header: Title and Current Path -->
+    <!-- Header: Title and Close -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/tvPickerTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Browse Files"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp"
+            android:text="Browse PDF Files"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnPickerClose"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="44dp"
             android:text="✕ Close"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
+            android:textColor="@color/btn_focus_text_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:focusable="true" />
     </LinearLayout>
 
+    <!-- Quick Location Shortcuts for TV Remote -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
+
+        <Button
+            android:id="@+id/btnShortcutDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="📥 Download"
+            android:textColor="@color/btn_focus_text_color"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:background="@drawable/focus_button_bg"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:focusable="true"
+            android:layout_marginEnd="10dp" />
+
+        <Button
+            android:id="@+id/btnShortcutDocuments"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="📄 Documents"
+            android:textColor="@color/btn_focus_text_color"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:background="@drawable/focus_button_bg"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:focusable="true"
+            android:layout_marginEnd="10dp" />
+
+        <Button
+            android:id="@+id/btnShortcutUsb"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="💾 USB Drives"
+            android:textColor="@color/btn_focus_text_color"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:background="@drawable/focus_button_bg"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:focusable="true"
+            android:layout_marginEnd="10dp" />
+
+        <Button
+            android:id="@+id/btnShortcutScanAll"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="🔍 Scan All Device"
+            android:textColor="@color/btn_focus_text_color"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:background="@drawable/focus_button_bg"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:focusable="true"
+            android:layout_marginEnd="10dp" />
+
+        <Button
+            android:id="@+id/btnShortcutSystemPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="📂 System Picker"
+            android:textColor="@color/btn_focus_text_color"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:background="@drawable/focus_button_bg"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- Current Path Breadcrumb -->
     <TextView
         android:id="@+id/tvCurrentPath"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="/storage/emulated/0"
-        android:textColor="@color/text_muted"
-        android:textSize="12sp"
+        android:textColor="@color/accent_blue"
+        android:textSize="13sp"
+        android:textStyle="bold"
         android:maxLines="1"
         android:ellipsize="start"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="10dp" />
 
-    <!-- File list -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFileList"
+    <!-- File list container -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical" />
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/tvEmptyFolder"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="center"
-        android:text="No PDF files or folders found here."
-        android:textColor="@color/text_muted"
-        android:textSize="14sp"
-        android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFileList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@color/accent_blue" />
+
+        <LinearLayout
+            android:id="@+id/layoutEmptyFolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📁"
+                android:textSize="40sp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No PDF files found in this folder."
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Try clicking [Download], [Documents], or [Scan All Device] above."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:layout_marginTop="6dp" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/pbScanning"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/accent_blue"
+            android:visibility="gone" />
+    </FrameLayout>
+
 </LinearLayout>
