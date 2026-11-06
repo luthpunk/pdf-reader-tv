@@ -18,11 +18,14 @@ class PdfEngine(private val context: Context) : AutoCloseable {
     var pageCount: Int = 0
         private set
 
-    // Memory cache for rendered pages (around 12-16 high res pages)
+    // Memory cache for rendered pages (around 16 high res pages)
     private val memoryCache: LruCache<Int, Bitmap> = object : LruCache<Int, Bitmap>(16) {
         override fun entryRemoved(evicted: Boolean, key: Int?, oldValue: Bitmap?, newValue: Bitmap?) {
-            // Bitmap recycling can be handled here if needed
         }
+    }
+
+    fun getCachedBitmap(pageIndex: Int): Bitmap? {
+        return memoryCache.get(pageIndex)
     }
 
     suspend fun open(filePath: String, uri: Uri? = null): Boolean = withContext(Dispatchers.IO) {

@@ -30,6 +30,8 @@
         <!-- Main Home & Library Activity -->
         <activity
             android:name=".ui.MainActivity"
+            android:banner="@drawable/tv_banner"
+            android:icon="@drawable/ic_launcher"
             android:exported="true"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|navigation">

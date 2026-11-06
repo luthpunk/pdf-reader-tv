@@ -25,7 +25,6 @@ import com.luthpunk.tvreader.ui.adapter.PageJumpAdapter
 import com.luthpunk.tvreader.ui.adapter.PdfPageAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 
 class ReaderActivity : AppCompatActivity() {
@@ -137,6 +136,10 @@ class ReaderActivity : AppCompatActivity() {
                 }
             }
         })
+
+        readerRoot.isFocusable = true
+        readerRoot.isFocusableInTouchMode = true
+        readerRoot.requestFocus()
     }
 
     private fun resolveIntentAndOpen() {
@@ -219,12 +222,17 @@ class ReaderActivity : AppCompatActivity() {
             jumpToPage(currentPageIndex)
             updatePageProgress(currentPageIndex)
             setupDrawerContent()
+
+            // Keep focus strictly on the reading canvas so OK toggles menus cleanly
+            readerRoot.requestFocus()
         }
     }
 
     private fun setupAdapters() {
         val adapter = PdfPageAdapter(pdfEngine, lifecycleScope)
         vpReaderPaged.adapter = adapter
+        // Keep 2 offscreen pages rendered so slide transitions are butter-smooth and instant
+        vpReaderPaged.offscreenPageLimit = 2
 
         rvReaderContinuous.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rvReaderContinuous.adapter = adapter
@@ -233,7 +241,6 @@ class ReaderActivity : AppCompatActivity() {
     private fun setupDrawerContent() {
         val book = currentBook ?: return
 
-        // Bookmarks Adapter
         bookmarkAdapter = BookmarkAdapter(
             bookmarks = book.bookmarks,
             onBookmarkClicked = { bookmark ->
@@ -250,7 +257,6 @@ class ReaderActivity : AppCompatActivity() {
         rvBookmarks.adapter = bookmarkAdapter
         updateBookmarkList()
 
-        // Page Jump Adapter
         val jumpAdapter = PageJumpAdapter(pdfEngine.pageCount) { pageIndex ->
             jumpToPage(pageIndex)
             toggleDrawer(false)
@@ -272,14 +278,14 @@ class ReaderActivity : AppCompatActivity() {
             rvReaderContinuous.visibility = View.VISIBLE
             btnToggleMode.text = getString(R.string.mode_continuous)
             rvReaderContinuous.scrollToPosition(currentPageIndex)
-            rvReaderContinuous.requestFocus()
         } else {
             rvReaderContinuous.visibility = View.GONE
             vpReaderPaged.visibility = View.VISIBLE
             btnToggleMode.text = getString(R.string.mode_paged)
             vpReaderPaged.setCurrentItem(currentPageIndex, false)
-            vpReaderPaged.requestFocus()
         }
+        // Return focus to toolbar button after click
+        btnToggleMode.requestFocus()
     }
 
     private fun jumpToPage(pageIndex: Int) {
@@ -288,7 +294,7 @@ class ReaderActivity : AppCompatActivity() {
         if (isContinuousMode) {
             rvReaderContinuous.scrollToPosition(clamped)
         } else {
-            vpReaderPaged.setCurrentItem(clamped, false)
+            vpReaderPaged.setCurrentItem(clamped, true) // Smooth slide transition
         }
         updatePageProgress(clamped)
     }
@@ -328,6 +334,7 @@ class ReaderActivity : AppCompatActivity() {
         }
         updateBookmarkButtonState()
         updateBookmarkList()
+        btnToggleBookmark.requestFocus()
     }
 
     private fun toggleFocusMode() {
@@ -336,9 +343,8 @@ class ReaderActivity : AppCompatActivity() {
         topToolbar.visibility = visibility
         bottomToolbar.visibility = visibility
 
-        if (!isFocusMode) {
-            btnToggleMode.requestFocus()
-        }
+        // Keep focus on readerRoot so subsequent OK presses toggle menus without activating buttons
+        readerRoot.requestFocus()
     }
 
     private fun toggleDrawer(open: Boolean) {
@@ -348,17 +354,13 @@ class ReaderActivity : AppCompatActivity() {
             btnCloseDrawer.requestFocus()
         } else {
             drawerLayout.visibility = View.GONE
-            if (isContinuousMode) {
-                rvReaderContinuous.requestFocus()
-            } else {
-                vpReaderPaged.requestFocus()
-            }
+            readerRoot.requestFocus()
         }
     }
 
     // Android TV Remote Control Key Interceptor
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        // If TOC / Bookmark drawer is open, Back key closes it
+        // 1. If Drawer is open, Back button closes it
         if (drawerLayout.visibility == View.VISIBLE) {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 toggleDrawer(false)
@@ -368,17 +370,36 @@ class ReaderActivity : AppCompatActivity() {
         }
 
         when (keyCode) {
-            // D-Pad OK / Center button toggles Focus Mode (Clean reading view)
+            // 2. Remote OK / Center button:
+            // If focus is on the reader canvas: ALWAYS toggles toolbar visibility (show / hide)
+            // If focus was explicitly moved UP to toolbar: let the focused button handle the click!
             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
-                // If top toolbar has focus, allow button click; otherwise toggle focus mode
-                if (topToolbar.hasFocus() || bottomToolbar.hasFocus()) {
-                    return super.onKeyDown(keyCode, event)
+                if (!topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
+                    toggleFocusMode()
+                    return true
                 }
-                toggleFocusMode()
-                return true
+                return super.onKeyDown(keyCode, event)
             }
 
-            // Remote Left / Page Up flips to previous page in Paged Mode
+            // 3. Remote UP:
+            // If menu is visible and focus is on reading canvas: move highlight UP to toolbar
+            KeyEvent.KEYCODE_DPAD_UP -> {
+                if (!isFocusMode && !topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
+                    btnToggleMode.requestFocus()
+                    return true
+                }
+            }
+
+            // 4. Remote DOWN:
+            // If focus is currently in top toolbar: move highlight DOWN back to reading canvas
+            KeyEvent.KEYCODE_DPAD_DOWN -> {
+                if (topToolbar.hasFocus()) {
+                    readerRoot.requestFocus()
+                    return true
+                }
+            }
+
+            // 5. Remote Left / Page Up: flips to previous page in Paged Mode
             KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_PAGE_UP -> {
                 if (!isContinuousMode && !topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
                     if (currentPageIndex > 0) {
@@ -388,7 +409,7 @@ class ReaderActivity : AppCompatActivity() {
                 }
             }
 
-            // Remote Right / Page Down flips to next page in Paged Mode
+            // 6. Remote Right / Page Down: flips to next page in Paged Mode
             KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_PAGE_DOWN -> {
                 if (!isContinuousMode && !topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
                     if (currentPageIndex < pdfEngine.pageCount - 1) {
@@ -398,14 +419,15 @@ class ReaderActivity : AppCompatActivity() {
                 }
             }
 
-            // Remote Menu button opens TOC Drawer
+            // 7. Menu / Info button opens TOC Drawer
             KeyEvent.KEYCODE_MENU, KeyEvent.KEYCODE_INFO -> {
                 toggleDrawer(true)
                 return true
             }
 
+            // 8. Back button: if menu is visible, hide it first; else exit
             KeyEvent.KEYCODE_BACK -> {
-                if (isFocusMode) {
+                if (!isFocusMode) {
                     toggleFocusMode()
                     return true
                 }
