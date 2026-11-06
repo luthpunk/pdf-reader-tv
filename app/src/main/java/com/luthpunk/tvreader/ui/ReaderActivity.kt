@@ -39,20 +39,17 @@ class ReaderActivity : AppCompatActivity() {
 
     private var currentBook: BookRecord? = null
     private var currentPageIndex: Int = 0
-    private var isContinuousMode = false
     private var isFocusMode = false
 
     // Views
     private lateinit var readerRoot: FrameLayout
     private lateinit var vpReaderPaged: ViewPager2
-    private lateinit var rvReaderContinuous: RecyclerView
     private lateinit var loadingIndicator: ProgressBar
 
     private lateinit var topToolbar: LinearLayout
     private lateinit var bottomToolbar: LinearLayout
     private lateinit var btnBack: Button
     private lateinit var tvDocTitle: TextView
-    private lateinit var btnToggleMode: Button
     private lateinit var btnToggleBookmark: Button
     private lateinit var btnOpenToc: Button
 
@@ -81,14 +78,12 @@ class ReaderActivity : AppCompatActivity() {
     private fun initViews() {
         readerRoot = findViewById(R.id.readerRoot)
         vpReaderPaged = findViewById(R.id.vpReaderPaged)
-        rvReaderContinuous = findViewById(R.id.rvReaderContinuous)
         loadingIndicator = findViewById(R.id.docLoadingIndicator)
 
         topToolbar = findViewById(R.id.topToolbar)
         bottomToolbar = findViewById(R.id.bottomToolbar)
         btnBack = findViewById(R.id.btnBack)
         tvDocTitle = findViewById(R.id.tvDocTitle)
-        btnToggleMode = findViewById(R.id.btnToggleMode)
         btnToggleBookmark = findViewById(R.id.btnToggleBookmark)
         btnOpenToc = findViewById(R.id.btnOpenToc)
 
@@ -102,10 +97,6 @@ class ReaderActivity : AppCompatActivity() {
         rvPageList = findViewById(R.id.rvPageList)
 
         btnBack.setOnClickListener { finish() }
-
-        btnToggleMode.setOnClickListener {
-            toggleReadingMode()
-        }
 
         btnToggleBookmark.setOnClickListener {
             toggleCurrentPageBookmark()
@@ -123,17 +114,6 @@ class ReaderActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 updatePageProgress(position)
-            }
-        })
-
-        rvReaderContinuous.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
-                val firstVisible = layoutManager.findFirstVisibleItemPosition()
-                if (firstVisible != RecyclerView.NO_POSITION) {
-                    updatePageProgress(firstVisible)
-                }
             }
         })
 
@@ -233,9 +213,6 @@ class ReaderActivity : AppCompatActivity() {
         vpReaderPaged.adapter = adapter
         // Keep 2 offscreen pages rendered so slide transitions are butter-smooth and instant
         vpReaderPaged.offscreenPageLimit = 2
-
-        rvReaderContinuous.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rvReaderContinuous.adapter = adapter
     }
 
     private fun setupDrawerContent() {
@@ -271,31 +248,10 @@ class ReaderActivity : AppCompatActivity() {
         tvNoBookmarks.visibility = if (book.bookmarks.isEmpty()) View.VISIBLE else View.GONE
     }
 
-    private fun toggleReadingMode() {
-        isContinuousMode = !isContinuousMode
-        if (isContinuousMode) {
-            vpReaderPaged.visibility = View.GONE
-            rvReaderContinuous.visibility = View.VISIBLE
-            btnToggleMode.text = getString(R.string.mode_continuous)
-            rvReaderContinuous.scrollToPosition(currentPageIndex)
-        } else {
-            rvReaderContinuous.visibility = View.GONE
-            vpReaderPaged.visibility = View.VISIBLE
-            btnToggleMode.text = getString(R.string.mode_paged)
-            vpReaderPaged.setCurrentItem(currentPageIndex, false)
-        }
-        // Return focus to toolbar button after click
-        btnToggleMode.requestFocus()
-    }
-
     private fun jumpToPage(pageIndex: Int) {
         val clamped = pageIndex.coerceIn(0, pdfEngine.pageCount - 1)
         currentPageIndex = clamped
-        if (isContinuousMode) {
-            rvReaderContinuous.scrollToPosition(clamped)
-        } else {
-            vpReaderPaged.setCurrentItem(clamped, true) // Smooth slide transition
-        }
+        vpReaderPaged.setCurrentItem(clamped, true) // Smooth slide transition
         updatePageProgress(clamped)
     }
 
@@ -385,7 +341,7 @@ class ReaderActivity : AppCompatActivity() {
             // If menu is visible and focus is on reading canvas: move highlight UP to toolbar
             KeyEvent.KEYCODE_DPAD_UP -> {
                 if (!isFocusMode && !topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
-                    btnToggleMode.requestFocus()
+                    btnToggleBookmark.requestFocus()
                     return true
                 }
             }
@@ -399,9 +355,9 @@ class ReaderActivity : AppCompatActivity() {
                 }
             }
 
-            // 5. Remote Left / Page Up: flips to previous page in Paged Mode
+            // 5. Remote Left / Page Up: flips to previous page
             KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_PAGE_UP -> {
-                if (!isContinuousMode && !topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
+                if (!topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
                     if (currentPageIndex > 0) {
                         jumpToPage(currentPageIndex - 1)
                         return true
@@ -409,9 +365,9 @@ class ReaderActivity : AppCompatActivity() {
                 }
             }
 
-            // 6. Remote Right / Page Down: flips to next page in Paged Mode
+            // 6. Remote Right / Page Down: flips to next page
             KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_PAGE_DOWN -> {
-                if (!isContinuousMode && !topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
+                if (!topToolbar.hasFocus() && !bottomToolbar.hasFocus()) {
                     if (currentPageIndex < pdfEngine.pageCount - 1) {
                         jumpToPage(currentPageIndex + 1)
                         return true

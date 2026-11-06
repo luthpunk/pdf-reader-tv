@@ -6,258 +6,233 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bg_main"
-    android:paddingStart="40dp"
-    android:paddingEnd="40dp"
+    android:paddingStart="48dp"
+    android:paddingEnd="48dp"
     android:paddingTop="28dp"
-    android:paddingBottom="28dp">
+    android:paddingBottom="24dp">
 
-    <!-- Top Bar: App Title and Exactly 2 Prominent Navigation Buttons -->
+    <!-- Top Bar: TV Reader Brand + Fixed Frosted Neon Pills -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="20dp">
 
+        <!-- Brand Title with Neon Dot -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
+                android:text="TV Reader"
                 android:textColor="#FFFFFF"
-                android:textSize="32sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.02" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tagline"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
+            <View
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/focus_button_bg"
+                android:backgroundTint="@color/neon_cyan" />
         </LinearLayout>
 
-        <!-- The 2 Top Buttons requested: [Browse Files] and [Library] -->
+        <!-- Top Menu Pills: [Search], [Sort By], [Browse Files] (Fixed Size, No Scale) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnBrowseFiles"
+                android:id="@+id/btnSearch"
                 android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:text="📁 Browse Files"
+                android:layout_height="42dp"
+                android:text="🔍 Search"
                 android:textColor="@color/btn_focus_text_color"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:background="@drawable/focus_button_bg"
-                android:paddingStart="24dp"
-                android:paddingEnd="24dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
                 android:focusable="true"
-                android:nextFocusDown="@+id/heroCard"
-                android:nextFocusRight="@+id/btnLibrary"
-                android:layout_marginEnd="16dp" />
+                android:nextFocusRight="@+id/btnSort"
+                android:layout_marginEnd="12dp" />
 
             <Button
-                android:id="@+id/btnLibrary"
+                android:id="@+id/btnSort"
                 android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:text="📚 Library"
+                android:layout_height="42dp"
+                android:text="⇅ Sort: Date"
                 android:textColor="@color/btn_focus_text_color"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:background="@drawable/focus_button_bg"
-                android:paddingStart="24dp"
-                android:paddingEnd="24dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
                 android:focusable="true"
-                android:nextFocusDown="@+id/heroCard"
-                android:nextFocusLeft="@+id/btnBrowseFiles" />
+                android:nextFocusLeft="@+id/btnSearch"
+                android:nextFocusRight="@+id/btnBrowseFiles"
+                android:layout_marginEnd="12dp" />
+
+            <Button
+                android:id="@+id/btnBrowseFiles"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:text="📂 Browse Files"
+                android:textColor="@color/btn_focus_text_color"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:background="@drawable/focus_button_bg"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:focusable="true"
+                android:nextFocusLeft="@+id/btnSort" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Main Content Area: Left side Continue Reading, Right side Recent Books -->
+    <!-- Search Input Bar (Visible when Search button is active) -->
     <LinearLayout
+        android:id="@+id/layoutSearchBar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_height="44dp"
+        android:background="@drawable/focus_button_bg"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone">
 
-        <!-- 1. Continue Reading (Hero Card) -->
-        <LinearLayout
-            android:layout_width="320dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginEnd="32dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔍"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/continue_reading"
-                android:textColor="@color/accent_blue"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textAllCaps="true"
-                android:letterSpacing="0.05"
-                android:layout_marginBottom="10dp" />
-
-            <FrameLayout
-                android:id="@+id/heroCard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/focus_card_bg"
-                android:padding="16dp"
-                android:focusable="true"
-                android:clickable="true"
-                android:nextFocusUp="@+id/btnBrowseFiles"
-                android:nextFocusRight="@+id/rvRecentBooks">
-
-                <LinearLayout
-                    android:id="@+id/heroContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <!-- Hero Cover Thumbnail -->
-                    <ImageView
-                        android:id="@+id/heroCover"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        android:background="#0A0D14"
-                        android:contentDescription="Book Cover" />
-
-                    <!-- Book Title -->
-                    <TextView
-                        android:id="@+id/heroTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Book Title"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:layout_marginTop="12dp" />
-
-                    <!-- Progress Bar -->
-                    <ProgressBar
-                        android:id="@+id/heroProgressBar"
-                        style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:layout_marginTop="8dp"
-                        android:max="100"
-                        android:progress="45"
-                        android:progressBackgroundTint="@color/progress_track"
-                        android:progressTint="@color/progress_indicator" />
-
-                    <!-- Progress Text -->
-                    <TextView
-                        android:id="@+id/heroProgressText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Page 45 of 120 (37%)"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="13sp"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-
-                <!-- Empty State for Hero Card -->
-                <LinearLayout
-                    android:id="@+id/heroEmptyLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📖"
-                        android:textSize="48sp"
-                        android:layout_marginBottom="12dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No document opened yet"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:gravity="center" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Click Browse Files above to choose a PDF from Storage or USB."
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        android:gravity="center"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-
-        <!-- 2. Recent Books Section -->
-        <LinearLayout
+        <EditText
+            android:id="@+id/etSearchQuery"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:hint="Type book or document title..."
+            android:textColorHint="@color/text_muted"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:background="@null"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/btnClearSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="✕ Clear"
+            android:textColor="@color/btn_focus_text_color"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:background="@drawable/focus_button_bg"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- Main Content Swimlanes (Netflix / Apple TV Layout) -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/mainScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- ROW 1: CONTINUE READING -->
             <LinearLayout
+                android:id="@+id/layoutContinueReading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="10dp">
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/sectionTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Recent Books"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvBookCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 documents"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    android:text="CONTINUE READING"
+                    android:textColor="@color/neon_cyan"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08"
+                    android:layout_marginBottom="12dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvRecentBooks"
+                    android:id="@+id/rvContinueReading"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:clipToPadding="false"
-                    android:scrollbars="vertical"
-                    android:nextFocusLeft="@+id/heroCard"
-                    android:nextFocusUp="@+id/btnLibrary" />
+                    android:scrollbars="none" />
+            </LinearLayout>
 
-                <!-- Empty state when no books -->
+            <!-- ROW 2: ALL DOCUMENTS -->
+            <LinearLayout
+                android:id="@+id/layoutAllDocuments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <LinearLayout
-                    android:id="@+id/recentEmptyLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ALL DOCUMENTS"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.06" />
+
+                    <TextView
+                        android:id="@+id/tvTotalDocumentsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(0 files)"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAllDocuments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:clipToPadding="false"
+                    android:scrollbars="none" />
+
+                <!-- Empty State when no PDFs are found -->
+                <LinearLayout
+                    android:id="@+id/layoutEmptyState"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:visibility="gone">
@@ -265,26 +240,30 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="No PDF files in Recent list."
-                        android:textColor="@color/text_secondary"
-                        android:textSize="15sp" />
+                        android:text="📄"
+                        android:textSize="36sp"
+                        android:layout_marginBottom="8dp" />
 
-                    <Button
-                        android:id="@+id/btnScanStorage"
+                    <TextView
+                        android:id="@+id/tvEmptyMessage"
                         android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:text="🔍 Auto-Scan Device for PDFs"
-                        android:textColor="@color/btn_focus_text_color"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:background="@drawable/focus_button_bg"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:focusable="true"
-                        android:layout_marginTop="16dp" />
+                        android:layout_height="wrap_content"
+                        android:text="No PDF documents found on this TV."
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Click Browse Files to locate PDFs or plug in a USB flash drive."
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp" />
                 </LinearLayout>
-            </FrameLayout>
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

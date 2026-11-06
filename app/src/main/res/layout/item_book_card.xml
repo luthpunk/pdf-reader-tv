@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="168dp"
-    android:layout_height="248dp"
-    android:layout_margin="8dp"
+    android:layout_width="160dp"
+    android:layout_height="235dp"
+    android:layout_marginEnd="16dp"
     android:background="@drawable/focus_card_bg"
     android:padding="10dp"
     android:focusable="true"
@@ -13,14 +13,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Cover Art Thumbnail -->
+        <!-- Cover Art Thumbnail (Fixed Size, Clean Dark Background) -->
         <ImageView
             android:id="@+id/cardCover"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:scaleType="fitCenter"
-            android:background="#0A0D14"
+            android:background="#070A10"
             android:contentDescription="Cover Art" />
 
         <!-- Title -->
@@ -40,13 +40,13 @@
             android:id="@+id/cardProgressBar"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="3dp"
             android:layout_marginTop="6dp"
             android:max="100"
             android:progressBackgroundTint="@color/progress_track"
             android:progressTint="@color/progress_indicator" />
 
-        <!-- Progress Text -->
+        <!-- Progress / File Info Text -->
         <TextView
             android:id="@+id/cardProgressText"
             android:layout_width="match_parent"

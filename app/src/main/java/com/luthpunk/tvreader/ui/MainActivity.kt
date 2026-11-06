@@ -4,19 +4,18 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.OpenableColumns
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.luthpunk.tvreader.R
 import com.luthpunk.tvreader.TvReaderApp
@@ -38,29 +37,33 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
+    private enum class SortType { DATE, NAME, PROGRESS }
+    private var currentSort = SortType.DATE
+
     private lateinit var app: TvReaderApp
-    private lateinit var libraryAdapter: LibraryGridAdapter
 
-    // Top 2 Buttons
+    // Top Navigation Pills
+    private lateinit var btnSearch: Button
+    private lateinit var btnSort: Button
     private lateinit var btnBrowseFiles: Button
-    private lateinit var btnLibrary: Button
 
-    // Hero Card (Continue Reading)
-    private lateinit var heroCard: FrameLayout
-    private lateinit var heroContent: LinearLayout
-    private lateinit var heroEmptyLayout: LinearLayout
-    private lateinit var heroCover: ImageView
-    private lateinit var heroTitle: TextView
-    private lateinit var heroProgressBar: ProgressBar
-    private lateinit var heroProgressText: TextView
+    // Search Box
+    private lateinit var layoutSearchBar: LinearLayout
+    private lateinit var etSearchQuery: EditText
+    private lateinit var btnClearSearch: Button
 
-    // Recent Books Section
-    private lateinit var rvRecentBooks: RecyclerView
-    private lateinit var tvBookCount: TextView
-    private lateinit var recentEmptyLayout: LinearLayout
-    private lateinit var btnScanStorage: Button
+    // Swimlanes
+    private lateinit var layoutContinueReading: LinearLayout
+    private lateinit var rvContinueReading: RecyclerView
+    private lateinit var continueAdapter: LibraryGridAdapter
 
-    private var mostRecentBook: BookRecord? = null
+    private lateinit var layoutAllDocuments: LinearLayout
+    private lateinit var tvTotalDocumentsCount: TextView
+    private lateinit var rvAllDocuments: RecyclerView
+    private lateinit var allDocsAdapter: LibraryGridAdapter
+    private lateinit var layoutEmptyState: LinearLayout
+
+    private var allDiscoveredBooks: List<BookRecord> = emptyList()
 
     // System File Picker Launcher
     private val systemPickerLauncher = registerForActivityResult(
@@ -95,112 +98,162 @@ class MainActivity : AppCompatActivity() {
 
         initViews()
         checkPermissions()
+
+        // Background auto-scan on startup to discover all PDFs
+        autoScanDevicePdfs()
     }
 
     override fun onResume() {
         super.onResume()
-        refreshLibrary()
+        refreshLists()
     }
 
     private fun initViews() {
+        btnSearch = findViewById(R.id.btnSearch)
+        btnSort = findViewById(R.id.btnSort)
         btnBrowseFiles = findViewById(R.id.btnBrowseFiles)
-        btnLibrary = findViewById(R.id.btnLibrary)
 
-        heroCard = findViewById(R.id.heroCard)
-        heroContent = findViewById(R.id.heroContent)
-        heroEmptyLayout = findViewById(R.id.heroEmptyLayout)
-        heroCover = findViewById(R.id.heroCover)
-        heroTitle = findViewById(R.id.heroTitle)
-        heroProgressBar = findViewById(R.id.heroProgressBar)
-        heroProgressText = findViewById(R.id.heroProgressText)
+        layoutSearchBar = findViewById(R.id.layoutSearchBar)
+        etSearchQuery = findViewById(R.id.etSearchQuery)
+        btnClearSearch = findViewById(R.id.btnClearSearch)
 
-        rvRecentBooks = findViewById(R.id.rvRecentBooks)
-        tvBookCount = findViewById(R.id.tvBookCount)
-        recentEmptyLayout = findViewById(R.id.recentEmptyLayout)
-        btnScanStorage = findViewById(R.id.btnScanStorage)
+        layoutContinueReading = findViewById(R.id.layoutContinueReading)
+        rvContinueReading = findViewById(R.id.rvContinueReading)
 
-        libraryAdapter = LibraryGridAdapter(emptyList()) { book ->
-            openBook(book)
+        layoutAllDocuments = findViewById(R.id.layoutAllDocuments)
+        tvTotalDocumentsCount = findViewById(R.id.tvTotalDocumentsCount)
+        rvAllDocuments = findViewById(R.id.rvAllDocuments)
+        layoutEmptyState = findViewById(R.id.layoutEmptyState)
+
+        // Setup Horizontal Adapters (Fixed size, no scaling)
+        continueAdapter = LibraryGridAdapter(emptyList()) { book -> openBook(book) }
+        rvContinueReading.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvContinueReading.adapter = continueAdapter
+
+        allDocsAdapter = LibraryGridAdapter(emptyList()) { book -> openBook(book) }
+        rvAllDocuments.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvAllDocuments.adapter = allDocsAdapter
+
+        // Top Pill Actions
+        btnSearch.setOnClickListener {
+            if (layoutSearchBar.visibility == View.VISIBLE) {
+                layoutSearchBar.visibility = View.GONE
+                etSearchQuery.setText("")
+            } else {
+                layoutSearchBar.visibility = View.VISIBLE
+                etSearchQuery.requestFocus()
+            }
         }
 
-        // TV Grid with 3 columns for sharp spacing
-        rvRecentBooks.layoutManager = GridLayoutManager(this, 3)
-        rvRecentBooks.adapter = libraryAdapter
+        btnClearSearch.setOnClickListener {
+            etSearchQuery.setText("")
+            layoutSearchBar.visibility = View.GONE
+            btnSearch.requestFocus()
+        }
 
-        // Top Button 1: Browse Files
+        etSearchQuery.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                applyFilterAndSort()
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        btnSort.setOnClickListener {
+            currentSort = when (currentSort) {
+                SortType.DATE -> SortType.NAME
+                SortType.NAME -> SortType.PROGRESS
+                SortType.PROGRESS -> SortType.DATE
+            }
+            btnSort.text = when (currentSort) {
+                SortType.DATE -> "⇅ Sort: Date"
+                SortType.NAME -> "⇅ Sort: Name"
+                SortType.PROGRESS -> "⇅ Sort: Progress"
+            }
+            applyFilterAndSort()
+        }
+
         btnBrowseFiles.setOnClickListener {
             openCustomFilePicker()
         }
-        btnBrowseFiles.setOnFocusChangeListener { _, hasFocus ->
-            btnBrowseFiles.animate().scaleX(if (hasFocus) 1.08f else 1.0f).scaleY(if (hasFocus) 1.08f else 1.0f).setDuration(120).start()
+    }
+
+    private fun refreshLists() {
+        val storedBooks = app.repository.getRecentBooks()
+
+        // 1. Continue Reading Row: only books with active reading progress
+        val continueBooks = storedBooks.filter { it.lastPage > 0 }
+        if (continueBooks.isNotEmpty()) {
+            layoutContinueReading.visibility = View.VISIBLE
+            continueAdapter.updateData(continueBooks)
+        } else {
+            layoutContinueReading.visibility = View.GONE
         }
 
-        // Top Button 2: Library (Auto-scans device & populates library)
-        btnLibrary.setOnClickListener {
-            scanAndPopulateLibrary()
-        }
-        btnLibrary.setOnFocusChangeListener { _, hasFocus ->
-            btnLibrary.animate().scaleX(if (hasFocus) 1.08f else 1.0f).scaleY(if (hasFocus) 1.08f else 1.0f).setDuration(120).start()
+        // 2. All Documents: Merge stored books with any scanned books
+        allDiscoveredBooks = storedBooks
+        applyFilterAndSort()
+    }
+
+    private fun applyFilterAndSort() {
+        val query = etSearchQuery.text.toString().trim().lowercase()
+
+        var filtered = if (query.isEmpty()) {
+            allDiscoveredBooks
+        } else {
+            allDiscoveredBooks.filter { it.title.lowercase().contains(query) }
         }
 
-        heroCard.setOnClickListener {
-            mostRecentBook?.let { openBook(it) }
+        filtered = when (currentSort) {
+            SortType.DATE -> filtered.sortedByDescending { it.lastOpenedTimestamp }
+            SortType.NAME -> filtered.sortedBy { it.title.lowercase() }
+            SortType.PROGRESS -> filtered.sortedByDescending { it.progressPercentage }
         }
 
-        heroCard.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                heroCard.elevation = 12f
-                heroCard.animate().scaleX(1.03f).scaleY(1.03f).setDuration(120).start()
-            } else {
-                heroCard.elevation = 0f
-                heroCard.animate().scaleX(1.0f).scaleY(1.0f).setDuration(120).start()
+        allDocsAdapter.updateData(filtered)
+        tvTotalDocumentsCount.text = "(${filtered.size} files)"
+
+        layoutEmptyState.visibility = if (filtered.isEmpty()) View.VISIBLE else View.GONE
+    }
+
+    private fun autoScanDevicePdfs() {
+        lifecycleScope.launch {
+            val foundPdfs = withContext(Dispatchers.IO) {
+                val results = mutableListOf<File>()
+                val roots = listOf(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+                    Environment.getExternalStorageDirectory(),
+                    File("/storage")
+                )
+                for (r in roots) {
+                    if (r != null && r.exists() && r.canRead()) {
+                        scanFolder(r, results, depth = 4)
+                    }
+                }
+                results.distinctBy { it.absolutePath }
             }
-        }
 
-        btnScanStorage.setOnClickListener {
-            scanAndPopulateLibrary()
+            for (pdf in foundPdfs) {
+                app.repository.getOrCreateBook(
+                    filePath = pdf.absolutePath,
+                    title = pdf.nameWithoutExtension
+                )
+            }
+
+            refreshLists()
         }
     }
 
-    private fun refreshLibrary() {
-        val books = app.repository.getRecentBooks()
-        libraryAdapter.updateData(books)
-        tvBookCount.text = "${books.size} documents"
-
-        mostRecentBook = app.repository.getMostRecentBook()
-        val latest = mostRecentBook
-
-        if (latest != null) {
-            heroContent.visibility = View.VISIBLE
-            heroEmptyLayout.visibility = View.GONE
-            heroTitle.text = latest.title
-            val progress = latest.progressPercentage
-            heroProgressBar.progress = progress
-            heroProgressText.text = "Page ${latest.lastPage + 1} of ${latest.pageCount} ($progress%)"
-
-            if (!latest.coverThumbnailPath.isNullOrEmpty()) {
-                val file = File(latest.coverThumbnailPath!!)
-                if (file.exists()) {
-                    val bmp = BitmapFactory.decodeFile(file.absolutePath)
-                    heroCover.setImageBitmap(bmp)
-                } else {
-                    heroCover.setImageResource(R.drawable.ic_launcher)
-                }
-            } else {
-                heroCover.setImageResource(R.drawable.ic_launcher)
+    private fun scanFolder(dir: File, list: MutableList<File>, depth: Int) {
+        if (depth <= 0 || list.size >= 120) return
+        val children = dir.listFiles() ?: return
+        for (f in children) {
+            if (f.isDirectory && !f.name.startsWith(".") && f.name != "Android") {
+                scanFolder(f, list, depth - 1)
+            } else if (f.isFile && f.name.endsWith(".pdf", ignoreCase = true)) {
+                list.add(f)
             }
-        } else {
-            heroContent.visibility = View.GONE
-            heroEmptyLayout.visibility = View.VISIBLE
-        }
-
-        recentEmptyLayout.visibility = if (books.isEmpty()) View.VISIBLE else View.GONE
-
-        // Set initial focus
-        if (latest != null) {
-            heroCard.requestFocus()
-        } else {
-            btnBrowseFiles.requestFocus()
         }
     }
 
@@ -233,49 +286,6 @@ class MainActivity : AppCompatActivity() {
             systemPickerLauncher.launch(intent)
         } catch (e: Exception) {
             Toast.makeText(this, "System file picker not available on this TV.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun scanAndPopulateLibrary() {
-        Toast.makeText(this, "Scanning device for PDF files...", Toast.LENGTH_SHORT).show()
-        lifecycleScope.launch {
-            val foundPdfs = withContext(Dispatchers.IO) {
-                val results = mutableListOf<File>()
-                val roots = listOf(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                    Environment.getExternalStorageDirectory(),
-                    File("/storage")
-                )
-                for (r in roots) {
-                    if (r != null && r.exists() && r.canRead()) {
-                        scanFolder(r, results, depth = 4)
-                    }
-                }
-                results.distinctBy { it.absolutePath }
-            }
-
-            for (pdf in foundPdfs) {
-                app.repository.getOrCreateBook(
-                    filePath = pdf.absolutePath,
-                    title = pdf.nameWithoutExtension
-                )
-            }
-
-            refreshLibrary()
-            Toast.makeText(this@MainActivity, "Found ${foundPdfs.size} PDFs on device!", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private fun scanFolder(dir: File, list: MutableList<File>, depth: Int) {
-        if (depth <= 0 || list.size >= 100) return
-        val children = dir.listFiles() ?: return
-        for (f in children) {
-            if (f.isDirectory && !f.name.startsWith(".") && f.name != "Android") {
-                scanFolder(f, list, depth - 1)
-            } else if (f.isFile && f.name.endsWith(".pdf", ignoreCase = true)) {
-                list.add(f)
-            }
         }
     }
 

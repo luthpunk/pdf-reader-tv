@@ -47,23 +47,24 @@ class LibraryGridAdapter(
                 }
             }
 
-            // TV Focus scale and elevation effect
+            // Fixed dimensions - NO SCALE, only clean subtle elevation
             itemView.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    itemView.elevation = 12f
-                    itemView.animate().scaleX(1.06f).scaleY(1.06f).setDuration(120).start()
-                } else {
-                    itemView.elevation = 0f
-                    itemView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(120).start()
-                }
+                itemView.elevation = if (hasFocus) 8f else 0f
             }
         }
 
         fun bind(book: BookRecord) {
             tvTitle.text = book.title
             val progress = book.progressPercentage
-            progressBar.progress = progress
-            tvProgress.text = "Page ${book.lastPage + 1} of ${book.pageCount} ($progress%)"
+
+            if (book.lastPage > 0) {
+                progressBar.visibility = View.VISIBLE
+                progressBar.progress = progress
+                tvProgress.text = "Page ${book.lastPage + 1} of ${book.pageCount} ($progress%)"
+            } else {
+                progressBar.visibility = View.GONE
+                tvProgress.text = if (book.pageCount > 1) "${book.pageCount} pages" else "PDF Document"
+            }
 
             if (!book.coverThumbnailPath.isNullOrEmpty()) {
                 val file = File(book.coverThumbnailPath!!)
