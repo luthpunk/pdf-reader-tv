@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Focused or pressed: Dark Charcoal Text so it is 100% visible on white highlight -->
+    <item android:state_focused="true" android:color="#121317" />
+    <item android:state_pressed="true" android:color="#121317" />
+    <item android:state_selected="true" android:color="#121317" />
+    <!-- Unfocused: Pure White Text on transparent pill -->
     <item android:color="#FFFFFF" />
 </selector>

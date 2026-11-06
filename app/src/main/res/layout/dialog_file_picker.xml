@@ -25,109 +25,147 @@
             android:text="Browse Documents"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:includeFontPadding="false" />
 
-        <Button
+        <TextView
             android:id="@+id/btnPickerClose"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="32dp"
             android:text="Close"
             android:textColor="@color/btn_focus_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:drawableStart="@drawable/ic_close_stroke"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/btn_focus_text_color"
             android:background="@drawable/focus_button_bg"
             android:paddingStart="14dp"
             android:paddingEnd="14dp"
-            android:focusable="true" />
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:focusable="true"
+            android:clickable="true" />
     </LinearLayout>
 
-    <!-- Quick Location Shortcuts with Line Icons (Smaller 34dp buttons) -->
+    <!-- Quick Location Shortcuts with Line Icons (Perfect Centering, White Text, No Padding Bloat) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_marginBottom="12dp">
 
-        <Button
+        <TextView
             android:id="@+id/btnShortcutDownload"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="32dp"
             android:text="Download"
             android:textColor="@color/btn_focus_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:drawableStart="@drawable/ic_folder_stroke"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/btn_focus_text_color"
             android:background="@drawable/focus_button_bg"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:focusable="true"
+            android:clickable="true"
             android:layout_marginEnd="8dp" />
 
-        <Button
+        <TextView
             android:id="@+id/btnShortcutDocuments"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="32dp"
             android:text="Documents"
             android:textColor="@color/btn_focus_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:drawableStart="@drawable/ic_pdf_stroke"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/btn_focus_text_color"
             android:background="@drawable/focus_button_bg"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:focusable="true"
+            android:clickable="true"
             android:layout_marginEnd="8dp" />
 
-        <Button
+        <TextView
             android:id="@+id/btnShortcutUsb"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="32dp"
             android:text="USB Drives"
             android:textColor="@color/btn_focus_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:drawableStart="@drawable/ic_folder_stroke"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/btn_focus_text_color"
             android:background="@drawable/focus_button_bg"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:focusable="true"
+            android:clickable="true"
             android:layout_marginEnd="8dp" />
 
-        <Button
+        <TextView
             android:id="@+id/btnShortcutScanAll"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="32dp"
             android:text="Scan All"
             android:textColor="@color/btn_focus_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:drawableStart="@drawable/ic_search_stroke"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/btn_focus_text_color"
             android:background="@drawable/focus_button_bg"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:focusable="true"
+            android:clickable="true"
             android:layout_marginEnd="8dp" />
 
-        <Button
+        <TextView
             android:id="@+id/btnShortcutSystemPicker"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="32dp"
             android:text="System Picker"
             android:textColor="@color/btn_focus_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:drawableStart="@drawable/ic_folder_stroke"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/btn_focus_text_color"
             android:background="@drawable/focus_button_bg"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:focusable="true" />
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:focusable="true"
+            android:clickable="true" />
     </LinearLayout>
 
     <!-- Current Path Breadcrumb in White -->
@@ -139,6 +177,7 @@
         android:textColor="#FFFFFF"
         android:textSize="12.5sp"
         android:textStyle="bold"
+        android:includeFontPadding="false"
         android:maxLines="1"
         android:ellipsize="start"
         android:layout_marginBottom="10dp" />
@@ -193,7 +232,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/neon_cyan"
+            android:indeterminateTint="#FFFFFF"
             android:visibility="gone" />
     </FrameLayout>
 

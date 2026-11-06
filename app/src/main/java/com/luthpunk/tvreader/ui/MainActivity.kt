@@ -40,13 +40,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var app: TvReaderApp
 
     // Top Navigation Pills (Clean Pill Outlined)
-    private lateinit var btnSearch: Button
-    private lateinit var btnBrowseFiles: Button
+    private lateinit var btnSearch: TextView
+    private lateinit var btnBrowseFiles: TextView
 
     // Search Box
     private lateinit var layoutSearchBar: LinearLayout
     private lateinit var etSearchQuery: EditText
-    private lateinit var btnClearSearch: Button
+    private lateinit var btnClearSearch: TextView
 
     // Swimlanes
     private lateinit var layoutContinueReading: LinearLayout

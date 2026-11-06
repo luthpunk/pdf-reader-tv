@@ -11,7 +11,7 @@
     android:paddingTop="22dp"
     android:paddingBottom="20dp">
 
-    <!-- Top Bar: Brand + Clean Outlined Pill Buttons (Search and Browse Files) -->
+    <!-- Top Bar: Brand + Perfectly Centered Pill Outlined Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,45 +28,59 @@
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold"
+            android:includeFontPadding="false"
             android:letterSpacing="0.02" />
 
-        <!-- Top Menu: Only Search and Browse Files (Pill Outlined, Transparent) -->
+        <!-- Top Menu: Only Search and Browse Files (Pill Outlined, Transparent, Perfectly Centered) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <Button
+            <TextView
                 android:id="@+id/btnSearch"
                 android:layout_width="wrap_content"
-                android:layout_height="34dp"
+                android:layout_height="32dp"
                 android:text="Search"
                 android:textColor="@color/btn_focus_text_color"
                 android:textSize="12sp"
                 android:textStyle="bold"
+                android:gravity="center"
+                android:includeFontPadding="false"
                 android:drawableStart="@drawable/ic_search_stroke"
                 android:drawablePadding="6dp"
+                android:drawableTint="@color/btn_focus_text_color"
                 android:background="@drawable/focus_button_bg"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:focusable="true"
+                android:clickable="true"
                 android:nextFocusRight="@+id/btnBrowseFiles"
                 android:layout_marginEnd="12dp" />
 
-            <Button
+            <TextView
                 android:id="@+id/btnBrowseFiles"
                 android:layout_width="wrap_content"
-                android:layout_height="34dp"
+                android:layout_height="32dp"
                 android:text="Browse Files"
                 android:textColor="@color/btn_focus_text_color"
                 android:textSize="12sp"
                 android:textStyle="bold"
+                android:gravity="center"
+                android:includeFontPadding="false"
                 android:drawableStart="@drawable/ic_folder_stroke"
                 android:drawablePadding="6dp"
+                android:drawableTint="@color/btn_focus_text_color"
                 android:background="@drawable/focus_button_bg"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:focusable="true"
+                android:clickable="true"
                 android:nextFocusLeft="@+id/btnSearch" />
         </LinearLayout>
     </LinearLayout>
@@ -105,20 +119,27 @@
             android:inputType="text"
             android:maxLines="1" />
 
-        <Button
+        <!-- Clear Search Button: Never truncated, perfectly centered text -->
+        <TextView
             android:id="@+id/btnClearSearch"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             android:text="Clear"
             android:textColor="@color/btn_focus_text_color"
-            android:textSize="11sp"
+            android:textSize="11.5sp"
             android:textStyle="bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:drawableStart="@drawable/ic_close_stroke"
-            android:drawablePadding="4dp"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/btn_focus_text_color"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:focusable="true" />
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:focusable="true"
+            android:clickable="true" />
     </LinearLayout>
 
     <!-- Main Content Swimlanes -->

@@ -44,12 +44,12 @@ class FilePickerDialog(
         rvFiles = findViewById(R.id.rvFileList)
         pbScanning = findViewById(R.id.pbScanning)
 
-        val btnClose: Button = findViewById(R.id.btnPickerClose)
-        val btnShortcutDownload: Button = findViewById(R.id.btnShortcutDownload)
-        val btnShortcutDocuments: Button = findViewById(R.id.btnShortcutDocuments)
-        val btnShortcutUsb: Button = findViewById(R.id.btnShortcutUsb)
-        val btnShortcutScanAll: Button = findViewById(R.id.btnShortcutScanAll)
-        val btnShortcutSystemPicker: Button = findViewById(R.id.btnShortcutSystemPicker)
+        val btnClose: TextView = findViewById(R.id.btnPickerClose)
+        val btnShortcutDownload: TextView = findViewById(R.id.btnShortcutDownload)
+        val btnShortcutDocuments: TextView = findViewById(R.id.btnShortcutDocuments)
+        val btnShortcutUsb: TextView = findViewById(R.id.btnShortcutUsb)
+        val btnShortcutScanAll: TextView = findViewById(R.id.btnShortcutScanAll)
+        val btnShortcutSystemPicker: TextView = findViewById(R.id.btnShortcutSystemPicker)
 
         btnClose.setOnClickListener { dismiss() }
 
