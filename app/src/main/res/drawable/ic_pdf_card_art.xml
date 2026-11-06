@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="160dp"
+    android:viewportWidth="120"
+    android:viewportHeight="160">
+
+    <!-- Subtle paper background (Square sheet) -->
+    <path
+        android:fillColor="#1B1E26"
+        android:strokeColor="#2E3444"
+        android:strokeWidth="1"
+        android:pathData="M16,14h88v132h-88z" />
+
+    <!-- Top fold detail -->
+    <path
+        android:fillColor="#252A36"
+        android:strokeColor="#2E3444"
+        android:strokeWidth="1"
+        android:pathData="M80,14h24v24z" />
+
+    <!-- Minimal Document Line strokes -->
+    <path
+        android:strokeColor="#3E475C"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M32,46h44M32,58h56M32,70h56M32,82h40" />
+
+    <!-- Clean PDF Badge Outline -->
+    <path
+        android:fillColor="#12151D"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.2"
+        android:pathData="M32,104h56v24h-56z" />
+
+    <!-- "P" -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M44,111v10M44,111h5a2.5,2.5 0 0,1 2.5,2.5v0a2.5,2.5 0 0,1 -2.5,2.5h-5" />
+
+    <!-- "D" -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M59,111v10M59,111h4a5,5 0 0,1 5,5v0a5,5 0 0,1 -5,5h-4" />
+
+    <!-- "F" -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M75,111v10M75,111h6M75,116h4" />
+</vector>

@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bg_main"
-    android:paddingStart="36dp"
-    android:paddingEnd="36dp"
-    android:paddingTop="24dp"
-    android:paddingBottom="24dp">
+    android:paddingStart="40dp"
+    android:paddingEnd="40dp"
+    android:paddingTop="22dp"
+    android:paddingBottom="22dp">
 
     <!-- Header: Title and Close -->
     <LinearLayout
@@ -22,26 +22,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Browse PDF Files"
+            android:text="Browse Documents"
             android:textColor="#FFFFFF"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnPickerClose"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="✕ Close"
+            android:layout_height="34dp"
+            android:text="Close"
             android:textColor="@color/btn_focus_text_color"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
+            android:drawableStart="@drawable/ic_close_stroke"
+            android:drawablePadding="5dp"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
             android:focusable="true" />
     </LinearLayout>
 
-    <!-- Quick Location Shortcuts for TV Remote -->
+    <!-- Quick Location Shortcuts with Line Icons (Smaller 34dp buttons) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,81 +53,91 @@
         <Button
             android:id="@+id/btnShortcutDownload"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="📥 Download"
+            android:layout_height="34dp"
+            android:text="Download"
             android:textColor="@color/btn_focus_text_color"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
+            android:drawableStart="@drawable/ic_folder_stroke"
+            android:drawablePadding="5dp"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:focusable="true"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btnShortcutDocuments"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="📄 Documents"
+            android:layout_height="34dp"
+            android:text="Documents"
             android:textColor="@color/btn_focus_text_color"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
+            android:drawableStart="@drawable/ic_pdf_stroke"
+            android:drawablePadding="5dp"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:focusable="true"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btnShortcutUsb"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="💾 USB Drives"
+            android:layout_height="34dp"
+            android:text="USB Drives"
             android:textColor="@color/btn_focus_text_color"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
+            android:drawableStart="@drawable/ic_folder_stroke"
+            android:drawablePadding="5dp"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:focusable="true"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btnShortcutScanAll"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="🔍 Scan All Device"
+            android:layout_height="34dp"
+            android:text="Scan All"
             android:textColor="@color/btn_focus_text_color"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
+            android:drawableStart="@drawable/ic_search_stroke"
+            android:drawablePadding="5dp"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:focusable="true"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btnShortcutSystemPicker"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="📂 System Picker"
+            android:layout_height="34dp"
+            android:text="System Picker"
             android:textColor="@color/btn_focus_text_color"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
+            android:drawableStart="@drawable/ic_folder_stroke"
+            android:drawablePadding="5dp"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:focusable="true" />
     </LinearLayout>
 
-    <!-- Current Path Breadcrumb -->
+    <!-- Current Path Breadcrumb in White -->
     <TextView
         android:id="@+id/tvCurrentPath"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="/storage/emulated/0"
-        android:textColor="@color/accent_blue"
-        android:textSize="13sp"
+        android:textColor="#FFFFFF"
+        android:textSize="12.5sp"
         android:textStyle="bold"
         android:maxLines="1"
         android:ellipsize="start"
@@ -142,7 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            android:scrollbarThumbVertical="@color/accent_blue" />
+            android:scrollbarThumbVertical="@color/neon_cyan" />
 
         <LinearLayout
             android:id="@+id/layoutEmptyFolder"
@@ -152,36 +164,36 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📁"
-                android:textSize="40sp"
-                android:layout_marginBottom="8dp" />
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_folder_stroke"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="Empty" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No PDF files found in this folder."
                 android:textColor="#FFFFFF"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Try clicking [Download], [Documents], or [Scan All Device] above."
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                android:layout_marginTop="6dp" />
+                android:text="Try clicking [Download], [Documents], or [Scan All] above."
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
         <ProgressBar
             android:id="@+id/pbScanning"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/accent_blue"
+            android:indeterminateTint="@color/neon_cyan"
             android:visibility="gone" />
     </FrameLayout>
 

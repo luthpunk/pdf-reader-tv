@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bg_main"
-    android:paddingStart="48dp"
-    android:paddingEnd="48dp"
-    android:paddingTop="28dp"
-    android:paddingBottom="24dp">
+    android:paddingStart="44dp"
+    android:paddingEnd="44dp"
+    android:paddingTop="22dp"
+    android:paddingBottom="20dp">
 
-    <!-- Top Bar: TV Reader Brand + Fixed Frosted Neon Pills -->
+    <!-- Top Bar: Brand + Minimalist Small Stroke-Icon Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="18dp">
 
-        <!-- Brand Title with Neon Dot -->
+        <!-- Brand Title with Thin Neon Line Indicator -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,19 +32,18 @@
                 android:layout_height="wrap_content"
                 android:text="TV Reader"
                 android:textColor="#FFFFFF"
-                android:textSize="26sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.02" />
 
             <View
-                android:layout_width="7dp"
-                android:layout_height="7dp"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/focus_button_bg"
-                android:backgroundTint="@color/neon_cyan" />
+                android:background="@color/neon_cyan" />
         </LinearLayout>
 
-        <!-- Top Menu Pills: [Search], [Sort By], [Browse Files] (Fixed Size, No Scale) -->
+        <!-- Minimalist Small Buttons (Height: 34dp, Line Icons, White Font) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,79 +52,85 @@
             <Button
                 android:id="@+id/btnSearch"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:text="🔍 Search"
+                android:layout_height="34dp"
+                android:text="Search"
                 android:textColor="@color/btn_focus_text_color"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
+                android:drawableStart="@drawable/ic_search_stroke"
+                android:drawablePadding="6dp"
                 android:background="@drawable/focus_button_bg"
-                android:paddingStart="18dp"
-                android:paddingEnd="18dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:focusable="true"
                 android:nextFocusRight="@+id/btnSort"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="10dp" />
 
             <Button
                 android:id="@+id/btnSort"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:text="⇅ Sort: Date"
+                android:layout_height="34dp"
+                android:text="Sort: Date"
                 android:textColor="@color/btn_focus_text_color"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
+                android:drawableStart="@drawable/ic_sort_stroke"
+                android:drawablePadding="6dp"
                 android:background="@drawable/focus_button_bg"
-                android:paddingStart="18dp"
-                android:paddingEnd="18dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:focusable="true"
                 android:nextFocusLeft="@+id/btnSearch"
                 android:nextFocusRight="@+id/btnBrowseFiles"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="10dp" />
 
             <Button
                 android:id="@+id/btnBrowseFiles"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:text="📂 Browse Files"
+                android:layout_height="34dp"
+                android:text="Browse Files"
                 android:textColor="@color/btn_focus_text_color"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
+                android:drawableStart="@drawable/ic_folder_stroke"
+                android:drawablePadding="6dp"
                 android:background="@drawable/focus_button_bg"
-                android:paddingStart="18dp"
-                android:paddingEnd="18dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
                 android:focusable="true"
                 android:nextFocusLeft="@+id/btnSort" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Search Input Bar (Visible when Search button is active) -->
+    <!-- Search Input Bar with Line Icons -->
     <LinearLayout
         android:id="@+id/layoutSearchBar"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="38dp"
         android:background="@drawable/focus_button_bg"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:layout_marginBottom="14dp"
         android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🔍"
-            android:textSize="14sp"
-            android:layout_marginEnd="12dp" />
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_search_stroke"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="Search Icon" />
 
         <EditText
             android:id="@+id/etSearchQuery"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:hint="Type book or document title..."
+            android:hint="Type document title..."
             android:textColorHint="@color/text_muted"
             android:textColor="#FFFFFF"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:background="@null"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -134,18 +139,20 @@
         <Button
             android:id="@+id/btnClearSearch"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:text="✕ Clear"
+            android:layout_height="28dp"
+            android:text="Clear"
             android:textColor="@color/btn_focus_text_color"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textStyle="bold"
+            android:drawableStart="@drawable/ic_close_stroke"
+            android:drawablePadding="4dp"
             android:background="@drawable/focus_button_bg"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:focusable="true" />
     </LinearLayout>
 
-    <!-- Main Content Swimlanes (Netflix / Apple TV Layout) -->
+    <!-- Main Content Swimlanes -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/mainScrollView"
         android:layout_width="match_parent"
@@ -165,18 +172,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="22dp"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CONTINUE READING"
-                    android:textColor="@color/neon_cyan"
-                    android:textSize="13sp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:letterSpacing="0.08"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="10dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvContinueReading"
@@ -199,14 +206,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ALL DOCUMENTS"
                         android:textColor="#FFFFFF"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         android:letterSpacing="0.06" />
 
@@ -215,7 +222,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="(0 files)"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="#FFFFFF"
                         android:textSize="12sp"
                         android:layout_marginStart="8dp" />
                 </LinearLayout>
@@ -228,21 +235,21 @@
                     android:clipToPadding="false"
                     android:scrollbars="none" />
 
-                <!-- Empty State when no PDFs are found -->
+                <!-- Empty State -->
                 <LinearLayout
                     android:id="@+id/layoutEmptyState"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
+                    android:layout_height="160dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📄"
-                        android:textSize="36sp"
-                        android:layout_marginBottom="8dp" />
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_pdf_stroke"
+                        android:layout_marginBottom="8dp"
+                        android:contentDescription="No PDF" />
 
                     <TextView
                         android:id="@+id/tvEmptyMessage"
@@ -250,14 +257,14 @@
                         android:layout_height="wrap_content"
                         android:text="No PDF documents found on this TV."
                         android:textColor="#FFFFFF"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Click Browse Files to locate PDFs or plug in a USB flash drive."
-                        android:textColor="@color/text_secondary"
+                        android:textColor="#FFFFFF"
                         android:textSize="12sp"
                         android:layout_marginTop="4dp" />
                 </LinearLayout>

@@ -14,6 +14,7 @@ import java.io.File
 
 class LibraryGridAdapter(
     private var books: List<BookRecord>,
+    private val isAllDocumentsRow: Boolean = false,
     private val onBookClicked: (BookRecord) -> Unit
 ) : RecyclerView.Adapter<LibraryGridAdapter.BookViewHolder>() {
 
@@ -47,9 +48,9 @@ class LibraryGridAdapter(
                 }
             }
 
-            // Fixed dimensions - NO SCALE, only clean subtle elevation
+            // Fixed dimensions - NO SCALE, clean subtle focus elevation
             itemView.setOnFocusChangeListener { _, hasFocus ->
-                itemView.elevation = if (hasFocus) 8f else 0f
+                itemView.elevation = if (hasFocus) 6f else 0f
             }
         }
 
@@ -57,25 +58,32 @@ class LibraryGridAdapter(
             tvTitle.text = book.title
             val progress = book.progressPercentage
 
+            // Progress details in clean white
             if (book.lastPage > 0) {
                 progressBar.visibility = View.VISIBLE
                 progressBar.progress = progress
-                tvProgress.text = "Page ${book.lastPage + 1} of ${book.pageCount} ($progress%)"
+                tvProgress.text = "Page ${book.lastPage + 1} of ${book.pageCount} (${progress}%)"
             } else {
                 progressBar.visibility = View.GONE
                 tvProgress.text = if (book.pageCount > 1) "${book.pageCount} pages" else "PDF Document"
             }
 
-            if (!book.coverThumbnailPath.isNullOrEmpty()) {
-                val file = File(book.coverThumbnailPath!!)
-                if (file.exists()) {
-                    val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-                    ivCover.setImageBitmap(bitmap)
-                } else {
-                    ivCover.setImageResource(R.drawable.ic_launcher)
-                }
+            // User request: In "All Documents", use uniform square PDF icon banner so all cards match cohesively
+            if (isAllDocumentsRow) {
+                ivCover.setImageResource(R.drawable.ic_pdf_card_art)
             } else {
-                ivCover.setImageResource(R.drawable.ic_launcher)
+                // Continue Reading shows actual cover preview if available
+                if (!book.coverThumbnailPath.isNullOrEmpty()) {
+                    val file = File(book.coverThumbnailPath!!)
+                    if (file.exists()) {
+                        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                        ivCover.setImageBitmap(bitmap)
+                    } else {
+                        ivCover.setImageResource(R.drawable.ic_pdf_card_art)
+                    }
+                } else {
+                    ivCover.setImageResource(R.drawable.ic_pdf_card_art)
+                }
             }
         }
     }

@@ -12,11 +12,11 @@
 
     <TextView
         android:id="@+id/tvJumpPageNum"
-        android:layout_width="70dp"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:text="Page 1"
-        android:textColor="@color/accent_blue"
-        android:textSize="13sp"
+        android:textColor="#FFFFFF"
+        android:textSize="12.5sp"
         android:textStyle="bold" />
 
     <TextView
@@ -25,8 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Chapter / Section"
-        android:textColor="@color/text_primary"
-        android:textSize="13sp"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
         android:maxLines="1"
         android:ellipsize="end" />
 </LinearLayout>

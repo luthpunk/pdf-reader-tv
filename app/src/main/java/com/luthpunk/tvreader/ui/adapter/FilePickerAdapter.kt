@@ -3,6 +3,7 @@ package com.luthpunk.tvreader.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.luthpunk.tvreader.R
@@ -35,7 +36,7 @@ class FilePickerAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class FileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvIcon: TextView = itemView.findViewById(R.id.tvFileIcon)
+        private val ivIcon: ImageView = itemView.findViewById(R.id.ivFileIcon)
         private val tvName: TextView = itemView.findViewById(R.id.tvFileName)
         private val tvDetails: TextView = itemView.findViewById(R.id.tvFileDetails)
 
@@ -51,11 +52,11 @@ class FilePickerAdapter(
         fun bind(file: File) {
             tvName.text = file.name
             if (file.isDirectory) {
-                tvIcon.text = "📁"
+                ivIcon.setImageResource(R.drawable.ic_folder_stroke)
                 val count = file.listFiles()?.size ?: 0
                 tvDetails.text = "Folder • $count items"
             } else {
-                tvIcon.text = "📄"
+                ivIcon.setImageResource(R.drawable.ic_pdf_stroke)
                 val sizeKb = file.length() / 1024
                 val dateStr = dateFormat.format(Date(file.lastModified()))
                 tvDetails.text = "${sizeKb} KB • $dateStr"

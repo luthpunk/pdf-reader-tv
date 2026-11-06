@@ -126,11 +126,12 @@ class MainActivity : AppCompatActivity() {
         layoutEmptyState = findViewById(R.id.layoutEmptyState)
 
         // Setup Horizontal Adapters (Fixed size, no scaling)
-        continueAdapter = LibraryGridAdapter(emptyList()) { book -> openBook(book) }
+        continueAdapter = LibraryGridAdapter(emptyList(), isAllDocumentsRow = false) { book -> openBook(book) }
         rvContinueReading.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvContinueReading.adapter = continueAdapter
 
-        allDocsAdapter = LibraryGridAdapter(emptyList()) { book -> openBook(book) }
+        // User request: All Documents row displays uniform PDF document art so all cards match cohesively
+        allDocsAdapter = LibraryGridAdapter(emptyList(), isAllDocumentsRow = true) { book -> openBook(book) }
         rvAllDocuments.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvAllDocuments.adapter = allDocsAdapter
 
@@ -166,9 +167,9 @@ class MainActivity : AppCompatActivity() {
                 SortType.PROGRESS -> SortType.DATE
             }
             btnSort.text = when (currentSort) {
-                SortType.DATE -> "⇅ Sort: Date"
-                SortType.NAME -> "⇅ Sort: Name"
-                SortType.PROGRESS -> "⇅ Sort: Progress"
+                SortType.DATE -> "Sort: Date"
+                SortType.NAME -> "Sort: Name"
+                SortType.PROGRESS -> "Sort: Progress"
             }
             applyFilterAndSort()
         }

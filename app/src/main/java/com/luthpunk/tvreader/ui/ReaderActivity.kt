@@ -275,7 +275,7 @@ class ReaderActivity : AppCompatActivity() {
     private fun updateBookmarkButtonState() {
         val book = currentBook ?: return
         val isMarked = app.repository.isBookmarked(book.id, currentPageIndex)
-        btnToggleBookmark.text = if (isMarked) "★ Bookmarked" else "☆ Bookmark"
+        btnToggleBookmark.text = if (isMarked) "Bookmarked" else "Bookmark"
     }
 
     private fun toggleCurrentPageBookmark() {

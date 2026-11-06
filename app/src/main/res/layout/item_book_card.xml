@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="160dp"
-    android:layout_height="235dp"
-    android:layout_marginEnd="16dp"
+    android:layout_width="150dp"
+    android:layout_height="225dp"
+    android:layout_marginEnd="14dp"
     android:background="@drawable/focus_card_bg"
-    android:padding="10dp"
+    android:padding="8dp"
     android:focusable="true"
     android:clickable="true">
 
@@ -13,46 +13,51 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Cover Art Thumbnail (Fixed Size, Clean Dark Background) -->
-        <ImageView
-            android:id="@+id/cardCover"
+        <!-- Square Paper Image Container (Thin 1dp border, fits flush with paper) -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:background="#070A10"
-            android:contentDescription="Cover Art" />
+            android:background="#16181F">
 
-        <!-- Title -->
+            <ImageView
+                android:id="@+id/cardCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:contentDescription="Document Banner" />
+        </FrameLayout>
+
+        <!-- Title in Pure White -->
         <TextView
             android:id="@+id/cardTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:maxLines="2"
             android:ellipsize="end"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="6dp" />
 
-        <!-- Reading Progress Bar -->
+        <!-- Progress Bar -->
         <ProgressBar
             android:id="@+id/cardProgressBar"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginTop="6dp"
+            android:layout_height="2.5dp"
+            android:layout_marginTop="5dp"
             android:max="100"
             android:progressBackgroundTint="@color/progress_track"
             android:progressTint="@color/progress_indicator" />
 
-        <!-- Progress / File Info Text -->
+        <!-- Progress & Page info in White -->
         <TextView
             android:id="@+id/cardProgressText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_secondary"
-            android:textSize="11sp"
-            android:layout_marginTop="4dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="10.5sp"
+            android:layout_marginTop="3dp" />
     </LinearLayout>
 </FrameLayout>

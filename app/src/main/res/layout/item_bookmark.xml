@@ -10,15 +10,22 @@
     android:clickable="true"
     android:gravity="center_vertical">
 
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_bookmark_stroke"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="Bookmark" />
+
     <TextView
         android:id="@+id/tvBookmarkPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Page 12"
-        android:textColor="@color/accent_amber"
-        android:textSize="13sp"
+        android:textColor="#FFFFFF"
+        android:textSize="12.5sp"
         android:textStyle="bold"
-        android:layout_marginEnd="12dp" />
+        android:layout_marginEnd="10dp" />
 
     <TextView
         android:id="@+id/tvBookmarkNote"
@@ -26,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Saved bookmark"
-        android:textColor="@color/text_primary"
+        android:textColor="#FFFFFF"
         android:textSize="12sp"
         android:maxLines="1"
         android:ellipsize="end" />
@@ -36,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete"
-        android:textColor="@color/text_muted"
+        android:textColor="#FFFFFF"
         android:textSize="11sp"
         android:padding="4dp" />
 </LinearLayout>
