@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/focus_item_bg"
+    android:focusable="true"
+    android:clickable="true"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tvJumpPageNum"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="Page 1"
+        android:textColor="@color/accent_blue"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvJumpLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Chapter / Section"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+</LinearLayout>

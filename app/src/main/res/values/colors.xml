@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_main">#0B0E14</color>
+    <color name="bg_surface">#151922</color>
+    <color name="bg_surface_elevated">#1E2330</color>
+    <color name="bg_card">#181D27</color>
+    <color name="bg_card_focused">#252C3D</color>
+
+    <color name="accent_blue">#38BDF8</color>
+    <color name="accent_blue_glow">#4D38BDF8</color>
+    <color name="accent_teal">#2DD4BF</color>
+    <color name="accent_amber">#FBBF24</color>
+
+    <color name="text_primary">#F8FAFC</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_muted">#64748B</color>
+
+    <color name="border_subtle">#2A3245</color>
+    <color name="border_focused">#38BDF8</color>
+
+    <color name="progress_track">#283042</color>
+    <color name="progress_indicator">#38BDF8</color>
+
+    <color name="overlay_toolbar">#E60F131A</color>
+    <color name="overlay_drawer">#F20D1117</color>
+</resources>

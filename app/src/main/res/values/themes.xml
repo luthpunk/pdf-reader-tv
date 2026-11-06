@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.TvReader" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Window background & navigation bar for TV -->
+        <item name="android:windowBackground">@color/bg_main</item>
+        <item name="android:statusBarColor">@color/bg_main</item>
+        <item name="android:navigationBarColor">@color/bg_main</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+
+        <!-- Brand colors -->
+        <item name="colorPrimary">@color/accent_blue</item>
+        <item name="colorSecondary">@color/accent_teal</item>
+        <item name="colorSurface">@color/bg_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnPrimary">@color/bg_main</item>
+
+        <!-- Focus highlight for Android TV remote D-Pad -->
+        <item name="android:defaultFocusHighlightEnabled">false</item>
+    </style>
+</resources>

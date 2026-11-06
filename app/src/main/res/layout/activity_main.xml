@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_main"
+    android:paddingStart="48dp"
+    android:paddingEnd="48dp"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp">
+
+    <!-- Top Bar: App Title, Slogan, and Actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/text_primary"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.02" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tagline"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Action Buttons (D-Pad Remote Focusable) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnBrowseStorage"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/internal_storage"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:background="@drawable/focus_button_bg"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:focusable="true"
+                android:nextFocusDown="@+id/heroCard"
+                android:layout_marginEnd="12dp" />
+
+            <Button
+                android:id="@+id/btnBrowseUsb"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/usb_storage"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:background="@drawable/focus_button_bg"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:focusable="true"
+                android:nextFocusDown="@+id/heroCard"
+                android:layout_marginEnd="12dp" />
+
+            <Button
+                android:id="@+id/btnSort"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/sort_recent"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:background="@drawable/focus_button_bg"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:focusable="true"
+                android:nextFocusDown="@+id/heroCard" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Main Content: Left side Continue Reading Hero, Right side Library Grid -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <!-- Continue Reading Card -->
+        <FrameLayout
+            android:id="@+id/heroCard"
+            android:layout_width="320dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/focus_card_bg"
+            android:padding="16dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_marginEnd="32dp">
+
+            <LinearLayout
+                android:id="@+id/heroContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/continue_reading"
+                    android:textColor="@color/accent_blue"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Hero Cover Art -->
+                <ImageView
+                    android:id="@+id/heroCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:background="@color/bg_surface"
+                    android:contentDescription="Book Cover" />
+
+                <TextView
+                    android:id="@+id/heroTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Book Title"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:layout_marginTop="12dp" />
+
+                <ProgressBar
+                    android:id="@+id/heroProgressBar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="8dp"
+                    android:max="100"
+                    android:progress="45"
+                    android:progressBackgroundTint="@color/progress_track"
+                    android:progressTint="@color/progress_indicator" />
+
+                <TextView
+                    android:id="@+id/heroProgressText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Page 45 of 120 (37%)"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/heroEmptyText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/no_recent_books"
+                android:textColor="@color/text_muted"
+                android:textSize="14sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- Library Section -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/libraryHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/library"
+                android:textColor="@color/text_secondary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLibrary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                android:scrollbarThumbVertical="@color/accent_blue" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
