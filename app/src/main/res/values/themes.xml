@@ -9,8 +9,8 @@
         <item name="android:windowFullscreen">true</item>
 
         <!-- Brand colors -->
-        <item name="colorPrimary">@color/accent_blue</item>
-        <item name="colorSecondary">@color/accent_teal</item>
+        <item name="colorPrimary">@color/neon_cyan</item>
+        <item name="colorSecondary">@color/neon_cyan</item>
         <item name="colorSurface">@color/bg_surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorOnPrimary">@color/bg_main</item>

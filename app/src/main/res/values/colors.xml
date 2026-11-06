@@ -9,6 +9,7 @@
     <color name="neon_cyan">#00E5FF</color>
     <color name="neon_cyan_glow">#4000E5FF</color>
     <color name="accent_blue">#38BDF8</color>
+    <color name="accent_teal">#00E5FF</color>
     <color name="accent_amber">#FBBF24</color>
 
     <color name="text_primary">#FFFFFF</color>
